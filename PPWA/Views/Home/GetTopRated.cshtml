@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+}
+@model PPWA.ViewModels.IndexVM
+
+<div class="text-center">
+    <section id="team" class="team">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>Top rated</h2>
+            </div>
+
+            <div class="row">
+                @foreach (var item in Model.PopularMovies)
+                {
+                    <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <div class="member-img">
+                                <img src="https://image.tmdb.org/t/p/original/@item.poster_path" class="img-fluid" alt="">
+                                <div class="social">
+                                    <a href=""><i class="bi bi-twitter"></i></a>
+                                    <a href=""><i class="bi bi-facebook"></i></a>
+                                    <a href=""><i class="bi bi-instagram"></i></a>
+                                    <a href=""><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="member-info">
+                                <h4>@item.name</h4>
+                                <span>@item.overview</span>
+
+                                <a asp-action="GetDetail" asp-controller="Home" asp-route-id="@item.id">Detalii</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <button value="@item.id" onClick="UpdateStatus(@item.id)">Film favorit</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+    </section>
+    <div>
+        <nav aria-label="...">
+            <ul class="pagination">
+                @for (int i = Model.page; i <= Model.page + 9 && i < Model.total_pages; i++)
+                {
+                    <li class="page-item ">
+                        <a asp-action="GetTopRated" asp-controller="Home" asp-route-page="@i" class="page-link">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+$("button").click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/Home/AddToFavorite/",
+        data: {
+            Id: $(this).val(), // < note use of 'this' here
+            access_token: $("#access_token").val()
+        },
+        success: function(result) {
+            alert('Film adaugat cu succes in favorite');
+        },
+        error: function(result) {
+            alert('Eroare, incearca mai tirziu');
+        }
+    });
+});
+</script>

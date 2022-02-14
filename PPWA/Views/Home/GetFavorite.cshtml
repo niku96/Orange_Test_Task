@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model PPWA.ViewModels.FavoriteVM
+
+
+
+<section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Titlu</th>
+                    <th scope="col">Id</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Favorites)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.TmdbId</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="First group">
+                                <a class="btn btn-secondary" asp-action="GetDetail" asp-controller="Home" asp-route-id="@item.TmdbId">Detalii</a>
+                                <button value="@item.Id" onClick="UpdateStatus(@item.Id)">Elimina</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</section><!-- End Portfolio Details Section -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+$("button").click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/Home/DeleteFavorite/",
+        data: {
+            Id: $(this).val(), // < note use of 'this' here
+            access_token: $("#access_token").val()
+        },
+        success: function(result) {
+            alert('Film eliminat cu succes din lista favoritelor');
+        },
+        error: function(result) {
+            alert('Eroare, incearca mai tirziu');
+        }
+    });
+});
+</script>

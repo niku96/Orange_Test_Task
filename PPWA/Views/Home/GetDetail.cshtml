@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model PPWA.ViewModels.DetailVM
+
+<section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>@Model.title</h1>
+            </div>
+        </div>
+        <div class="row gy-4">
+
+            <div class="col-lg-8">
+                <div class="portfolio-details-slider swiper">
+                    <div class="swiper-wrapper align-items-center">
+
+                        <div class="swiper-slide">
+                            <img src="https://image.tmdb.org/t/p/original/@Model.poster_path" alt="">
+                        </div>
+
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="portfolio-info">
+                    <h3>Despre film</h3>
+                    <ul>
+                        <li>
+                            <strong>Denumire originala</strong>: @Model.original_title
+                        </li>
+                        <li>
+                            <strong>Genuri</strong>: @foreach (var item in Model.genres)
+                            {@string.Concat(item, " ")                        }
+                        </li>
+                        <li>
+                            <strong>Producator</strong>: @foreach (var item in Model.production_companies)
+                            {@string.Concat(item, " ")}
+                        </li>
+                        <li>
+                            <strong>Tari producatoare</strong>: @foreach (var item in Model.production_countries)
+                            {@string.Concat(item, " ")}
+                        </li>
+                        <li><strong>Premiera</strong>: @Model.release_date</li>
+                        <li><strong>Buget</strong>: @Model.budget</li>
+                        <li><strong>Nota medie</strong>: @Model.vote_average <strong>bazata pe: </strong> @Model.vote_count note</li>
+                        <li><strong>Pagina web</strong>: <a href="@Model.homepage">@Model.homepage</a></li>
+                    </ul>
+                </div>
+                <div class="portfolio-description">
+                    <h2>Descriere</h2>
+                    <p>
+                        @Model.overview
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section><!-- End Portfolio Details Section -->
